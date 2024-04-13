@@ -40,7 +40,7 @@
 #include <openssl/err.h>
 #include <openssl/ssl.h>
 #include <openssl/evp.h>
-#include <openssl/opensslv.h>
+#include <openssl/opensslv.h> // Pour OPENSSL_VERSION_NUMBER
 
 
 #endif /* PISTACHE_USE_SSL */
