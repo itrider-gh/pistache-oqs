@@ -1,0 +1,13 @@
+# oqs support global config file for pistache app #
+
+# Build config
+
+OPENSSL_INCLUDE_PATH=/root/oqs-provider/openssl/include 
+
+SSL_LIB_PATH=/root/oqs-provider/openssl/libssl.so
+
+CRYPTO_LIB_PATH=/root/oqs-provider/openssl/libcrypto.so
+
+# OQS features config (can be configured after build)
+
+KEMAlgorithm=kyber512

@@ -125,7 +125,7 @@ if compiler_id == 'gcc' and compiler.version().version_compare('<9.1') or compil
 endif
 
 if get_option('PISTACHE_USE_SSL')
-	deps_libpistache += dependency('/root/oqs-provider/openssl/openssl.pc')
+	deps_libpistache += dependency('openssl')
 endif
 
 version_array = []

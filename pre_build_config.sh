@@ -47,7 +47,7 @@ fi
 # Replace old paths with new paths in build.ninja
 # Match any non-space sequence that ends with libssl.so or libcrypto.a to cover full old paths
 sed -i "s|[^ ]*libssl.so|$SSL_LIB_PATH|g" $NINJA_BUILD_FILE
-sed -i "s|[^ ]*libcrypto.a|$CRYPTO_LIB_PATH|g" $NINJA_BUILD_FILE
+sed -i "s|[^ ]*libcrypto\.so\([^ ]*\)\?|$CRYPTO_LIB_PATH|g; s|[^ ]*libcrypto\.a\([^ ]*\)\?|$CRYPTO_LIB_PATH|g" $NINJA_BUILD_FILE
 
 # Check if "-ldl" is already after the $CRYPTO_LIB_PATH on line 135, if not, add it
 if ! sed -n "135p" $NINJA_BUILD_FILE | grep -q "$CRYPTO_LIB_PATH -ldl"; then
