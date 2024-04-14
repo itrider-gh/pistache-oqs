@@ -54,20 +54,6 @@ namespace Pistache::Tcp
 
     namespace
     {
-        void load_custom_openssl_config() {
-                // Chemin vers votre fichier de configuration OpenSSL personnalisé
-                const char* config_file = "/root/oqs-provider/openssl/apps/openssl.cnf";
-
-            // Charger la configuration OpenSSL
-                long errorline = -1; // Pour la détection d'erreurs dans le fichier de configuration
-                if (!CONF_modules_load_file(config_file, NULL, CONF_MFLAGS_DEFAULT_SECTION)) {
-                    fprintf(stderr, "Erreur lors du chargement de la configuration OpenSSL de %s\n", config_file);
-                    // Gérer l'erreur, par exemple en imprimant plus d'informations sur l'erreur
-                    ERR_print_errors_fp(stderr);
-                    exit(1); // ou gérer l'erreur d'une manière qui convient à votre application
-                }
-        }
-
         std::string ssl_print_errors_to_string()
         {
             ssl::SSLBioPtr bio { BIO_new(BIO_s_mem()) };
