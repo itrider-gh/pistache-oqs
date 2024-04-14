@@ -26,10 +26,16 @@
 #include <sys/timerfd.h>
 #include <sys/types.h>
 
+#include <cstdlib> 
 #include <chrono>
 #include <memory>
 #include <string>
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <stdexcept>
+#include <sstream>
+#include <map>
 
 #include <cerrno>
 #include <signal.h>
@@ -46,6 +52,31 @@
 #endif /* PISTACHE_USE_SSL */
 
 using namespace std::chrono_literals;
+
+std::map<std::string, std::string> readConfig(const std::string& filename) {
+    std::map<std::string, std::string> config;
+    std::ifstream file(filename);
+    std::string line;
+
+    if (!file.is_open()) {
+        throw std::runtime_error("Unable to open config file.");
+    }
+
+    while (getline(file, line)) {
+        std::istringstream is_line(line);
+        std::string key;
+        if (getline(is_line, key, '=')) {
+            std::string value;
+            if (key[0] == '#') continue;  // Skip comments
+            if (getline(is_line, value)) {
+                config[key] = value;
+            }
+        }
+    }
+
+    file.close();
+    return config;
+}
 
 namespace Pistache::Tcp
 {
@@ -129,12 +160,22 @@ namespace Pistache::Tcp
                 throw std::runtime_error(err);
             }
 
+            const char* env_path = std::getenv("PISTACHE_OQS_CONFIG");
+            if (env_path == nullptr) {
+                std::cerr << "Error: PISTACHE_OQS_CONFIG environment variable is not set." << std::endl;
+            }
+
+            std::string configPath = std::string(env_path);
+
+            std::map<std::string, std::string> config = readConfig(configPath);
+            std::string kemAlgorithm = config["KEMAlgorithm"];
+
             // Set Kyber512 as the KEM algorithm
-            if (SSL_CTX_set1_groups_list(GetSSLContext(ctx), "kyber512") != 1) {
+            if (SSL_CTX_set1_groups_list(GetSSLContext(ctx), kemAlgorithm.c_str()) != 1) {
                 std::string err = "SSL error - cannot set Kyber512 as KEM group: " + ssl_print_errors_to_string();
                 throw std::runtime_error(err);
             }
-
+            
             SSL_CTX_set_mode(GetSSLContext(ctx), SSL_MODE_ENABLE_PARTIAL_WRITE);
             SSL_CTX_set_mode(GetSSLContext(ctx), SSL_MODE_ACCEPT_MOVING_WRITE_BUFFER);
             return ctx;

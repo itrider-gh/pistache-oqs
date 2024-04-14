@@ -36,10 +36,9 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 if (PISTACHE_USE_SSL)
-    #find_package(OpenSSL REQUIRED COMPONENTS SSL Crypto)
-    set(OPENSSL_INCLUDE_DIR /root/oqs-provider/openssl/include)
-    set(OPENSSL_SSL_LIBRARY /root/oqs-provider/openssl/libssl.so.3)
-    set(OPENSSL_CRYPTO_LIBRARY /root/oqs-provider/openssl/libcrypto.so.3)
+    set(OPENSSL_INCLUDE_DIR /root/oqs-provider/openssl/include )
+    set(OPENSSL_SSL_LIBRARY /root/oqs-provider/openssl/libssl.so)
+    set(OPENSSL_CRYPTO_LIBRARY /root/oqs-provider/openssl/libcrypto.so)
     include_directories(${OPENSSL_INCLUDE_DIR})
 endif ()
 
