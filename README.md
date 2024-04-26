@@ -43,6 +43,7 @@ meson setup build -DPISTACHE_USE_SSL=true
 ### 4. Run Pre-Build Configuration
 Execute the provided script to finalize the pre-build configuration:
 ```bash
+chmod +x pre_build_config.sh
 ./pre_build_config.sh
 ```
 
